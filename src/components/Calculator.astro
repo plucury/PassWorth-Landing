@@ -32,8 +32,11 @@ const DEFAULTS = { single: 20, pass: 120, expected: 10 };
         </div>
       </div>
 
-      <div class="mt-6 h-4 w-full rounded-full bg-slate-200 dark:bg-slate-800">
-        <div id="progress" class="h-4 rounded-full bg-primary" style="width: 0%"></div>
+      <div class="mt-6 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+        <div class="flex h-4 w-full">
+          <div id="commonSeg" class="h-4 bg-slate-300 dark:bg-slate-700" style="width: 0%"></div>
+          <div id="diffSeg" class="h-4 bg-primary" style="width: 0%"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -71,32 +74,37 @@ const DEFAULTS = { single: 20, pass: 120, expected: 10 };
       if (avgEl) avgEl.textContent = avgCost ? formatCurrency(avgCost) : '–';
       const diffTitleEl = document.getElementById('diffTitle');
       const diffValueEl = document.getElementById('diffValue');
-      const progressEl = document.getElementById('progress');
-      if (!diffTitleEl || !diffValueEl || !progressEl) return;
+      const commonSeg = document.getElementById('commonSeg');
+      const diffSeg = document.getElementById('diffSeg');
+      if (!diffTitleEl || !diffValueEl || !commonSeg || !diffSeg) return;
 
       // Reset classes
       diffValueEl.classList.remove('text-primary', 'text-red-600');
-      progressEl.classList.remove('bg-primary', 'bg-red-500');
+      diffSeg.classList.remove('bg-primary', 'bg-red-500');
 
       if (diff >= 0) {
         // Pass saves money vs singles
         diffTitleEl.textContent = 'Savings vs singles';
-        diffValueEl.textContent = formatCurrency(savings);
+        diffValueEl.textContent = formatCurrency(diff);
         diffValueEl.classList.add('text-primary');
-        progressEl.classList.add('bg-primary');
+        diffSeg.classList.add('bg-primary');
       } else {
         const remaining = Math.max(0, breakeven - expected);
         diffTitleEl.textContent = `Break-even uses in ${remaining}`;
         diffValueEl.textContent = `${remaining} uses`;
         diffValueEl.classList.add('text-red-600');
-        progressEl.classList.add('bg-red-500');
+        diffSeg.classList.add('bg-red-500');
       }
 
-      // Progress width is the relative difference magnitude
-      const magnitude = Math.abs(diff);
-      const denominator = Math.max(singlesTotal, pass, 1);
-      const percent = Math.round((magnitude / denominator) * 100);
-      progressEl.style.width = `${percent}%`;
+      // Segmented bar: left = common cost, right = difference
+      const totalSingles = singlesTotal;
+      const totalPass = pass;
+      const maxTotal = Math.max(totalSingles, totalPass, 1);
+      const common = Math.min(totalSingles, totalPass);
+      const commonPct = Math.round((common / maxTotal) * 100);
+      const diffPct = 100 - commonPct;
+      commonSeg.style.width = `${commonPct}%`;
+      diffSeg.style.width = `${diffPct}%`;
     }
 
     ['single','pass','expected'].forEach(id => {
