@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
-Sitemap: https://passworth.app/sitemap-index.xml
+Sitemap: https://passworth.plucury.me/sitemap-index.xml
 

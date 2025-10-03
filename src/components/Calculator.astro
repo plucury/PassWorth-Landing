@@ -23,10 +23,6 @@ const DEFAULTS = { single: 20, pass: 120, expected: 10 };
     <div class="mt-6">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div class="space-y-1">
-          <p class="text-sm text-slate-500"></p>
-          <p id="breakeven" class="text-xl font-semibold">–</p>
-        </div>
-        <div class="space-y-1">
           <p class="text-sm text-slate-500">Avg cost per use (pass)</p>
           <p id="avgcost" class="text-xl font-semibold">–</p>
         </div>
@@ -71,11 +67,12 @@ const DEFAULTS = { single: 20, pass: 120, expected: 10 };
       const diff = singlesTotal - pass; // >0 savings with pass, <0 pass is more expensive
       const savings = Math.max(0, diff);
 
-      $('breakeven').textContent = breakeven ? `${breakeven} uses` : '–';
-      $('avgcost').textContent = avgCost ? formatCurrency(avgCost) : '–';
+      const avgEl = document.getElementById('avgcost');
+      if (avgEl) avgEl.textContent = avgCost ? formatCurrency(avgCost) : '–';
       const diffTitleEl = document.getElementById('diffTitle');
       const diffValueEl = document.getElementById('diffValue');
       const progressEl = document.getElementById('progress');
+      if (!diffTitleEl || !diffValueEl || !progressEl) return;
 
       // Reset classes
       diffValueEl.classList.remove('text-primary', 'text-red-600');

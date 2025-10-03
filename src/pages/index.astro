@@ -4,11 +4,6 @@ import Calculator from '../components/Calculator.astro';
 ---
 
 <BaseLayout>
-  <header class="container-responsive py-6">
-    <nav class="flex items-center justify-between">
-      <a href="/" class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">PassWorth</a>
-    </nav>
-  </header>
   <main class="container-responsive py-10 sm:py-16">
     <!-- Hero -->
     <section class="grid items-center gap-10 sm:grid-cols-2">
@@ -95,17 +90,6 @@ import Calculator from '../components/Calculator.astro';
       <a href="#" class="mt-6 inline-flex items-center rounded-lg bg-primary px-6 py-3 text-white shadow hover:bg-primary-600">Download the App</a>
     </section>
 
-    <!-- Footer -->
-    <footer class="mt-32 border-t border-slate-200 py-10 text-sm text-slate-500 dark:border-slate-800">
-      <div class="container-responsive flex flex-col items-center justify-between gap-4 sm:flex-row">
-        <p>© {new Date().getFullYear()} PassWorth</p>
-        <nav class="flex gap-6">
-          <a href="#" class="hover:text-slate-700 dark:hover:text-slate-300">Privacy</a>
-          <a href="#" class="hover:text-slate-700 dark:hover:text-slate-300">Terms</a>
-          <a href="mailto:hello@passworth.app" class="hover:text-slate-700 dark:hover:text-slate-300">Contact</a>
-        </nav>
-      </div>
-    </footer>
   </main>
   
   <!-- JSON-LD basic placeholders; detailed schemas will be added later -->
