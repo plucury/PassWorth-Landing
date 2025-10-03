@@ -1,0 +1,115 @@
+---
+const DEFAULTS = { single: 20, pass: 120, expected: 10 };
+---
+
+<section class="mt-24">
+  <h2 class="text-2xl font-bold">Demo / Calculator</h2>
+  <div class="mt-6 rounded-2xl border border-slate-200 p-6 dark:border-slate-800">
+    <div class="grid gap-4 sm:grid-cols-3">
+      <label class="block">
+        <span class="mb-1 block text-sm text-slate-600 dark:text-slate-300">Single entry price</span>
+        <input id="single" type="number" min="0" step="0.01" value={DEFAULTS.single} class="h-11 w-full rounded-lg border border-slate-300 px-3 dark:border-slate-700 dark:bg-slate-900" />
+      </label>
+      <label class="block">
+        <span class="mb-1 block text-sm text-slate-600 dark:text-slate-300">Time-based pass price</span>
+        <input id="pass" type="number" min="0" step="0.01" value={DEFAULTS.pass} class="h-11 w-full rounded-lg border border-slate-300 px-3 dark:border-slate-700 dark:bg-slate-900" />
+      </label>
+      <label class="block">
+        <span class="mb-1 block text-sm text-slate-600 dark:text-slate-300">Expected uses</span>
+        <input id="expected" type="number" min="1" step="1" value={DEFAULTS.expected} class="h-11 w-full rounded-lg border border-slate-300 px-3 dark:border-slate-700 dark:bg-slate-900" />
+      </label>
+    </div>
+
+    <div class="mt-6">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div class="space-y-1">
+          <p class="text-sm text-slate-500"></p>
+          <p id="breakeven" class="text-xl font-semibold">–</p>
+        </div>
+        <div class="space-y-1">
+          <p class="text-sm text-slate-500">Avg cost per use (pass)</p>
+          <p id="avgcost" class="text-xl font-semibold">–</p>
+        </div>
+        <div class="space-y-1">
+          <p id="diffTitle" class="text-sm text-slate-500">Savings vs singles</p>
+          <p id="diffValue" class="text-xl font-semibold text-primary">–</p>
+        </div>
+      </div>
+
+      <div class="mt-6 h-4 w-full rounded-full bg-slate-200 dark:bg-slate-800">
+        <div id="progress" class="h-4 rounded-full bg-primary" style="width: 0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function toNumber(input, fallback = 0) {
+      const value = parseFloat(String(input.value));
+      return Number.isFinite(value) ? value : fallback;
+    }
+
+    function formatCurrency(n) {
+      try {
+        return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(n);
+      } catch {
+        return `$${n.toFixed(2)}`;
+      }
+    }
+
+    function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+    function recalc() {
+      const single = clamp(toNumber($('single'), 0), 0, 1e9);
+      const pass = clamp(toNumber($('pass'), 0), 0, 1e9);
+      const expected = clamp(Math.floor(toNumber($('expected'), 1)), 1, 10000);
+
+      const breakeven = single > 0 ? Math.ceil(pass / single) : 0;
+      const avgCost = expected > 0 ? pass / expected : 0;
+      const singlesTotal = expected * single;
+      const diff = singlesTotal - pass; // >0 savings with pass, <0 pass is more expensive
+      const savings = Math.max(0, diff);
+
+      $('breakeven').textContent = breakeven ? `${breakeven} uses` : '–';
+      $('avgcost').textContent = avgCost ? formatCurrency(avgCost) : '–';
+      const diffTitleEl = document.getElementById('diffTitle');
+      const diffValueEl = document.getElementById('diffValue');
+      const progressEl = document.getElementById('progress');
+
+      // Reset classes
+      diffValueEl.classList.remove('text-primary', 'text-red-600');
+      progressEl.classList.remove('bg-primary', 'bg-red-500');
+
+      if (diff >= 0) {
+        // Pass saves money vs singles
+        diffTitleEl.textContent = 'Savings vs singles';
+        diffValueEl.textContent = formatCurrency(savings);
+        diffValueEl.classList.add('text-primary');
+        progressEl.classList.add('bg-primary');
+      } else {
+        const remaining = Math.max(0, breakeven - expected);
+        diffTitleEl.textContent = `Break-even uses in ${remaining}`;
+        diffValueEl.textContent = `${remaining} uses`;
+        diffValueEl.classList.add('text-red-600');
+        progressEl.classList.add('bg-red-500');
+      }
+
+      // Progress width is the relative difference magnitude
+      const magnitude = Math.abs(diff);
+      const denominator = Math.max(singlesTotal, pass, 1);
+      const percent = Math.round((magnitude / denominator) * 100);
+      progressEl.style.width = `${percent}%`;
+    }
+
+    ['single','pass','expected'].forEach(id => {
+      const el = $(id);
+      el?.addEventListener('input', recalc);
+      el?.addEventListener('change', recalc);
+    });
+
+    // initial
+    recalc();
+  </script>
+</section>
+
