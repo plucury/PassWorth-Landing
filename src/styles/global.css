@@ -4,16 +4,17 @@
 
 @import "../../node_modules/preline/variants.css";
 
-:root {
-  color-scheme: light dark;
-}
-
 html {
+  color-scheme: light;
   scroll-behavior: smooth;
 }
 
 body {
   @apply bg-white text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased;
+}
+
+.dark {
+  color-scheme: dark;
 }
 
 .container-responsive {
