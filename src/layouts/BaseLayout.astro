@@ -2,9 +2,14 @@
 export interface Props {
   title?: string;
   description?: string;
+  keywords?: string;
 }
 
-const { title = 'PassWorth — Smarter passes, smarter choices.', description = 'Compare time-based passes and punch cards at a glance.' } = Astro.props as Props;
+const { 
+  title = 'PassWorth — Track Membership Cards & Choose the Best Deal', 
+  description = 'Track and compare any membership subscription or pass. Monitor your usage to maximize value and savings. Make smarter decisions for memberships, punch cards, and recurring subscriptions. Get your money\'s worth from every purchase.',
+  keywords = 'membership tracker, gym pass comparison, fitness subscription, membership card tracker, punch card, time-based pass, gym membership, yoga pass, climbing membership, subscription tracker, budget tracker, cost comparison, savings calculator, membership value, usage tracker, gym expense, fitness budget, membership worth, best deal finder, discount tracker'
+} = Astro.props as Props;
 import '../styles/global.css';
 ---
 
@@ -13,22 +18,35 @@ import '../styles/global.css';
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="canonical" href="https://passworth.plucury.me/" />
     <title>{title}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="author" content="PassWorth" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#3b82f6" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="PassWorth" />
+    <meta property="og:site_name" content="PassWorth - Membership & Subscription Tracker" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/og.jpg" />
-    <meta property="og:url" content="https://passworth.app" />
+    <meta property="og:image" content="https://passworth.plucury.me/images/passworth-og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:url" content="https://passworth.plucury.me/" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="/og.jpg" />
+    <meta name="twitter:image" content="https://passworth.plucury.me/images/passworth-og.jpg" />
+    <meta name="twitter:site" content="@passworth" />
+    <meta name="twitter:creator" content="@passworth" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
