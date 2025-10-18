@@ -205,4 +205,55 @@ import Calculator from '../components/Calculator.astro';
     browserRequirements: 'Requires JavaScript',
     applicationCategory: 'FinanceApplication'
   })}</script>
+  
+  <script type="application/ld+json">{JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'PassWorth',
+    url: 'https://passworth.plucury.me/',
+    description: 'Track and compare any membership subscription or pass. Monitor your usage to maximize value and savings.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://passworth.plucury.me/?q={search_term_string}',
+      'query-input': 'required name=search_term_string'
+    }
+  })}</script>
+  
+  <script type="application/ld+json">{JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'How to Choose the Best Membership Deal and Track Usage',
+    description: 'Learn how to compare membership costs, track your usage, and maximize savings from subscriptions, punch cards, and time-based passes.',
+    author: {
+      '@type': 'Organization',
+      name: 'PassWorth'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'PassWorth',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://passworth.plucury.me/images/passworth-icon.png'
+      }
+    },
+    datePublished: '2025-01-01',
+    dateModified: new Date().toISOString().split('T')[0],
+    mainEntityOfPage: 'https://passworth.plucury.me/',
+    keywords: 'membership tracking, cost comparison, subscription management, budget optimization, punch card tracker, value maximization',
+    articleSection: 'Finance & Productivity',
+    about: [
+      {
+        '@type': 'Thing',
+        name: 'Membership Management'
+      },
+      {
+        '@type': 'Thing',
+        name: 'Budget Optimization'
+      },
+      {
+        '@type': 'Thing',
+        name: 'Subscription Tracking'
+      }
+    ]
+  })}</script>
 </BaseLayout>
